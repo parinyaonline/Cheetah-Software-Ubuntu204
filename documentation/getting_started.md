@@ -30,6 +30,7 @@ cd ..
 mkdir build
 cd build
 cmake .. # there are still some warnings here
+cmake .. # there are still some warnings here
 make -j
 ```
 

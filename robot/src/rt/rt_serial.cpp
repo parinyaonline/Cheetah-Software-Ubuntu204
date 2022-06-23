@@ -12,16 +12,19 @@
 #include <string.h>
 #include <unistd.h>
 
-#define termios asmtermios
+//#define termios asmtermios
+//#include <asm/termios.h>
+//#undef termios
+//#include <termios.h>
 
-#include <asm/termios.h>
-
-#undef termios
-
-#include <termios.h>
 #include <math.h>
 #include <pthread.h>
-#include <stropts.h>
+//Parinya, <stropts.h> Remove from obsolescent. New Ubuntu 20.04 not support
+//#include <stropts.h>  
+// Incluse Fix ioctl for Ubuntu 20.04
+#include <asm/termbits.h>
+#include <sys/ioctl.h>
+// ******** //
 #include <endian.h>
 #include <stdint.h>
 
@@ -37,16 +40,15 @@ void init_serial_for_sbus(int fd, int baud) {
   tty.c_ispeed = baud;
   tty.c_ospeed = baud;
 
-
-tty.c_iflag &= ~(IGNBRK | BRKINT | PARMRK | ISTRIP
-                | INLCR | IGNCR | ICRNL | IXON);
-tty.c_oflag &= ~OPOST;
-tty.c_lflag &= ~(ECHO | ECHONL | ICANON | ISIG | IEXTEN);
-tty.c_cflag &= ~(CSIZE | PARENB);
-tty.c_cflag |= PARENB;
-tty.c_cflag &= ~PARODD;
-tty.c_cflag |=
-tty.c_cflag |= CS8;
+  tty.c_iflag &= ~(IGNBRK | BRKINT | PARMRK | ISTRIP
+                  | INLCR | IGNCR | ICRNL | IXON);
+  tty.c_oflag &= ~OPOST;
+  tty.c_lflag &= ~(ECHO | ECHONL | ICANON | ISIG | IEXTEN);
+  tty.c_cflag &= ~(CSIZE | PARENB);
+  tty.c_cflag |= PARENB;
+  tty.c_cflag &= ~PARODD;
+  tty.c_cflag |=
+  tty.c_cflag |= CS8;
 
   // tty.c_cflag = (tty.c_cflag & ~CSIZE) | CS8;  // 8-bit chars
   // disable IGNBRK for mismatched speed tests; otherwise receive break

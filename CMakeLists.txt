@@ -43,7 +43,7 @@ else(MINI_CHEETAH_BUILD)
     -Wextra -Wcast-align -Wdisabled-optimization -Wformat=2 \
     -Winit-self -Wmissing-include-dirs -Woverloaded-virtual \
     -Wshadow -Wsign-promo")
-    include_directories("/usr/local/include/")   # lcm includes
+    include_directories("/usr/include/")   # lcm includes
   endif()
 
   set(CMAKE_C_FLAGS "-O3  -ggdb  -march=native -std=gnu99 -I.")
